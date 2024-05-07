@@ -44,13 +44,6 @@
 TIM_HandleTypeDef htim2;
 
 /* USER CODE BEGIN PV */
-/* USER CODE END PV */
-
-/* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
-static void MX_GPIO_Init(void);
-static void MX_TIM2_Init(void);
-/* USER CODE BEGIN PFP */
 const int digitConfig[][7] = {
     // A, B, C, D, E, F, G, DP
     {1, 1, 1, 1, 1, 1, 0}, // 0
@@ -66,6 +59,14 @@ const int digitConfig[][7] = {
 };
 const int DOT_COUNTER = 100, LED_SWITCH_COUNTER = 25, CLOCK_COUNTER = 100;
 int hour = 15, minute = 12, second = 37;
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+static void MX_TIM2_Init(void);
+/* USER CODE BEGIN PFP */
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -108,6 +109,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  //* INITIAL SETUP *//
   int count_StateButton1 = 0;
   int count_up = 0;
   int time_LEDRED = 5;
@@ -129,10 +131,103 @@ int main(void)
   display7SEG2(0);
   display7SEG1(0);
   setTimer0(50);
+
   while (1)
   {
     /* USER CODE END WHILE */
+    if (button1_flag == 1)
+    {
+      if (count_StateButton1 > 4)
+      {
+        count_StateButton1 = 0;
+      }
+      if (button1_flag != button1_flagRelease && button1_flagRelease == 0)
+      {
+        count_StateButton1++;
+      }
+      button1_flagRelease = button1_flag;
+      button1_flag = 0;
+    }
+    if (count_StateButton1 == 1)
+    {
+      HAL_GPIO_WritePin(RED_1_GPIO_Port, RED_1_Pin, SET);
+      HAL_GPIO_WritePin(RED_2_GPIO_Port, RED_2_Pin, SET);
+      HAL_GPIO_WritePin(RED_3_GPIO_Port, RED_3_Pin, SET);
+      HAL_GPIO_WritePin(RED_4_GPIO_Port, RED_4_Pin, SET);
+      HAL_GPIO_WritePin(AMB_1_GPIO_Port, AMB_1_Pin, SET);
+      HAL_GPIO_WritePin(AMB_2_GPIO_Port, AMB_2_Pin, SET);
+      HAL_GPIO_WritePin(AMB_3_GPIO_Port, AMB_3_Pin, SET);
+      HAL_GPIO_WritePin(AMB_4_GPIO_Port, AMB_4_Pin, SET);
+      HAL_GPIO_WritePin(GREEN_1_GPIO_Port, GREEN_1_Pin, SET);
+      HAL_GPIO_WritePin(GREEN_2_GPIO_Port, GREEN_2_Pin, SET);
+      HAL_GPIO_WritePin(GREEN_3_GPIO_Port, GREEN_3_Pin, SET);
+      HAL_GPIO_WritePin(GREEN_4_GPIO_Port, GREEN_4_Pin, SET);
+    }
+    if (count_StateButton1 == 2)
+    {
+      if (timer0_flag == 1)
+      {
+        HAL_GPIO_TogglePin(RED_1_GPIO_Port, RED_1_Pin);
+        HAL_GPIO_TogglePin(RED_2_GPIO_Port, RED_2_Pin);
+        HAL_GPIO_TogglePin(RED_3_GPIO_Port, RED_3_Pin);
+        HAL_GPIO_TogglePin(RED_4_GPIO_Port, RED_4_Pin);
+        setTimer0(50);
+      }
+      display7SEG1(count_StateButton1);
+      if (button2_flag == 1)
+      {
+        button2_flag = 0;
+        count_up += 1;
+        if (count_up > 4)
+        {
+          display7SEG2(9);
+        }
+        display7SEG2(time_LEDRED + count_up);
+      }
 
+      if (button3_flag == 1)
+      {
+        if (button3_flag != button3_flagRelease && button3_flagRelease == 0)
+        {
+          time_LEDRED = time_LEDRED * 100 + count_up * 100;
+          count_up = 0;
+        }
+        button3_flagRelease = button3_flag;
+        button3_flag = 0;
+      }
+    }
+    if (count_StateButton1 == 3)
+    {
+      if (timer1_flag == 1)
+      {
+        HAL_GPIO_TogglePin(AMB_1_GPIO_Port, AMB_1_Pin);
+        HAL_GPIO_TogglePin(AMB_2_GPIO_Port, AMB_2_Pin);
+        HAL_GPIO_TogglePin(AMB_3_GPIO_Port, AMB_3_Pin);
+        HAL_GPIO_TogglePin(AMB_4_GPIO_Port, AMB_4_Pin);
+        setTimer1(50);
+      }
+      display7SEG1(count_StateButton1);
+      if (button2_flag == 1)
+      {
+        button2_flag = 0;
+        count_up += 1;
+        if (count_up > 4)
+        {
+          display7SEG2(9);
+        }
+        display7SEG2(time_LEDAMB + count_up);
+      }
+      if (button3_flag == 1)
+      {
+        if (button3_flag != button3_flagRelease && button3_flagRelease == 0)
+        {
+          time_LEDRED = time_LEDAMB * 100 + count_up * 100;
+          count_up = 0;
+        }
+        button3_flagRelease = button3_flag;
+        button3_flag = 0;
+      }
+    }
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
