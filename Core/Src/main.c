@@ -114,6 +114,8 @@ int main(void)
   int count_up = 0;
   int time_LEDRED = 5;
   int time_LEDAMB = 3;
+  int time_LEDGREEN = 2;
+
   // int time_LEDAWB = 300;
   // int time_LEDGREEN = 200;
   HAL_GPIO_WritePin(RED_1_GPIO_Port, RED_1_Pin, RESET);
@@ -217,6 +219,7 @@ int main(void)
         }
         display7SEG2(time_LEDAMB + count_up);
       }
+
       if (button3_flag == 1)
       {
         if (button3_flag != button3_flagRelease && button3_flagRelease == 0)
@@ -227,6 +230,134 @@ int main(void)
         button3_flagRelease = button3_flag;
         button3_flag = 0;
       }
+    }
+    if (button1_flag == 1)
+    {
+      if (count_StateButton1 > 4)
+      {
+        count_StateButton1 = 0;
+      }
+      if (button1_flag != button1_flagRelease && button1_flagRelease == 0)
+      {
+        count_StateButton1++;
+      }
+      button1_flagRelease = button1_flag;
+      button1_flag = 0;
+    }
+    if (count_StateButton1 == 1)
+    {
+      HAL_GPIO_WritePin(RED_1_GPIO_Port, RED_1_Pin, SET);
+      HAL_GPIO_WritePin(RED_2_GPIO_Port, RED_2_Pin, SET);
+      HAL_GPIO_WritePin(RED_3_GPIO_Port, RED_3_Pin, SET);
+      HAL_GPIO_WritePin(RED_4_GPIO_Port, RED_4_Pin, SET);
+      HAL_GPIO_WritePin(AMB_1_GPIO_Port, AMB_1_Pin, SET);
+      HAL_GPIO_WritePin(AMB_2_GPIO_Port, AMB_2_Pin, SET);
+      HAL_GPIO_WritePin(AMB_3_GPIO_Port, AMB_3_Pin, SET);
+      HAL_GPIO_WritePin(AMB_4_GPIO_Port, AMB_4_Pin, SET);
+      HAL_GPIO_WritePin(GREEN_1_GPIO_Port, GREEN_1_Pin, SET);
+      HAL_GPIO_WritePin(GREEN_2_GPIO_Port, GREEN_2_Pin, SET);
+      HAL_GPIO_WritePin(GREEN_3_GPIO_Port, GREEN_3_Pin, SET);
+      HAL_GPIO_WritePin(GREEN_4_GPIO_Port, GREEN_4_Pin, SET);
+    }
+    if (count_StateButton1 == 2)
+    {
+      if (timer0_flag == 1)
+      {
+        HAL_GPIO_TogglePin(RED_1_GPIO_Port, RED_1_Pin);
+        HAL_GPIO_TogglePin(RED_2_GPIO_Port, RED_2_Pin);
+        HAL_GPIO_TogglePin(RED_3_GPIO_Port, RED_3_Pin);
+        HAL_GPIO_TogglePin(RED_4_GPIO_Port, RED_4_Pin);
+        setTimer0(50);
+      }
+      display7SEG1(count_StateButton1);
+      if (button2_flag == 1)
+      {
+        button2_flag = 0;
+        count_up += 1;
+        if (count_up > 4)
+        {
+          display7SEG2(9);
+        }
+        display7SEG2(time_LEDRED + count_up);
+      }
+
+      if (button3_flag == 1)
+      {
+        if (button3_flag != button3_flagRelease && button3_flagRelease == 0)
+        {
+          time_LEDRED = time_LEDRED * 100 + count_up * 100;
+          count_up = 0;
+        }
+        button3_flagRelease = button3_flag;
+        button3_flag = 0;
+      }
+    }
+    if (count_StateButton1 == 3)
+    {
+      if (timer1_flag == 1)
+      {
+        HAL_GPIO_TogglePin(AMB_1_GPIO_Port, AMB_1_Pin);
+        HAL_GPIO_TogglePin(AMB_2_GPIO_Port, AMB_2_Pin);
+        HAL_GPIO_TogglePin(AMB_3_GPIO_Port, AMB_3_Pin);
+        HAL_GPIO_TogglePin(AMB_4_GPIO_Port, AMB_4_Pin);
+        setTimer1(50);
+      }
+      display7SEG1(count_StateButton1);
+      if (button2_flag == 1)
+      {
+        button2_flag = 0;
+        count_up += 1;
+        if (count_up > 4)
+        {
+          display7SEG2(9);
+        }
+        display7SEG2(time_LEDAMB + count_up);
+      }
+
+      if (button3_flag == 1)
+      {
+        if (button3_flag != button3_flagRelease && button3_flagRelease == 0)
+        {
+          time_LEDRED = time_LEDAMB * 100 + count_up * 100;
+          count_up = 0;
+        }
+        button3_flagRelease = button3_flag;
+        button3_flag = 0;
+      }
+    }
+    if (count_StateButton1 == 4)
+    {
+      if (timer1_flag == 1)
+      {
+        HAL_GPIO_TogglePin(GREEN_1_GPIO_Port, GREEN_1_Pin);
+        HAL_GPIO_TogglePin(GREEN_2_GPIO_Port, GREEN_2_Pin);
+        HAL_GPIO_TogglePin(GREEN_3_GPIO_Port, GREEN_3_Pin);
+        HAL_GPIO_TogglePin(GREEN_4_GPIO_Port, GREEN_4_Pin);
+        setTimer2(50);
+      }
+      display7SEG1(count_StateButton1);
+      if (button2_flag == 1)
+      {
+        button2_flag = 0;
+        count_up += 1;
+        if (count_up > 4)
+        {
+          display7SEG2(9);
+        }
+        display7SEG2(time_LEDGREEN + count_up);
+      }
+
+      if (button3_flag == 1)
+      {
+        if (button3_flag != button3_flagRelease && button3_flagRelease == 0)
+        {
+          time_LEDRED = time_LEDGREEN * 100 + count_up * 100;
+          count_up = 0;
+        }
+        button3_flagRelease = button3_flag;
+        button3_flag = 0;
+      }
+      count_StateButton1 = 1;
     }
     /* USER CODE BEGIN 3 */
   }
