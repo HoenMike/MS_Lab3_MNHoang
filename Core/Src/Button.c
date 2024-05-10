@@ -12,7 +12,7 @@ int keyReg1[3] = {NORMAL, NORMAL, NORMAL};
 int keyReg2[3] = {NORMAL, NORMAL, NORMAL};
 int keyReg3[3] = {NORMAL, NORMAL, NORMAL};
 
-int timeFORpress[3] = {200, 200, 200};
+int timeForPress[3] = {200, 200, 200};
 int button1_flag = 0;
 int button2_flag = 0;
 int button3_flag = 0;
@@ -49,7 +49,7 @@ void getKeyInput()
                     {
                         button3_flag = 1;
                     }
-                    timeFORpress[i] = 200;
+                    timeForPress[i] = 200;
                 }
                 else
                 {
@@ -65,8 +65,8 @@ void getKeyInput()
             }
             else
             {
-                timeFORpress[i]--;
-                if (timeFORpress[i] == 0)
+                timeForPress[i]--;
+                if (timeForPress[i] == 0)
                 {
                     keyReg3[i] = NORMAL;
                 }
